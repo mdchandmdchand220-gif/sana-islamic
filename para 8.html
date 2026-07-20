@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>पारा 8 - अल-अनआम</title>
+
+<style>
+body{
+    margin:0;
+    padding:15px;
+    background:#f4fff4;
+    font-family:Arial,sans-serif;
+}
+
+h1{
+    text-align:center;
+    color:#0b7a3b;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    margin:15px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.arabic{
+    font-size:30px;
+    text-align:right;
+    direction:rtl;
+    color:#006400;
+    line-height:2;
+}
+
+.hindi{
+    font-size:18px;
+    color:#222;
+    margin-top:10px;
+}
+
+.number{
+    background:#0b7a3b;
+    color:white;
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>पारा 8</h1>
+
+<div id="ayahs"></div>
+
+<script>
+fetch("https://api.alquran.cloud/v1/juz/8/quran-uthmani")
+.then(r=>r.json())
+.then(data=>{
+
+let html="";
+
+data.data.ayahs.forEach(a=>{
+
+html+=`
+<div class="card">
+<div class="number">आयत ${a.numberInSurah}</div>
+
+<div class="arabic">
+${a.text}
+</div>
+
+<div class="hindi">
+हिंदी अनुवाद यहाँ API से जोड़ें।
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById("ayahs").innerHTML=html;
+
+});
+</script>
+
+</body>
+</html>
