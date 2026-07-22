@@ -21,10 +21,11 @@
 
 <script>
 fetch("hadith.json")
-.then(response => response.json())
-.then(data => {
-
-    let container = document.getElementById("hadith-container");
+.then(response => {
+    alert("JSON Loaded");
+    return response.json();
+})
+   let container = document.getElementById("hadith-container");
 
     data.forEach(hadith => {
 
