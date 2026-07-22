@@ -25,6 +25,7 @@ fetch("hadith.json")
     alert("JSON Loaded");
     return response.json();
 })
+then(data=>{
    let container = document.getElementById("hadith-container");
 
     data.forEach(hadith => {
