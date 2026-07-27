@@ -7,50 +7,59 @@
 
 <style>
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#03fb03;
+margin:0;
+padding:0;
+font-family:Arial,sans-serif;
+background:#a9f406;
 }
 
 .card{
-    max-width:500px;
-    margin:30px auto;
-    background:#03fc5e;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 0 10px rgba(13,167,238,0.944);
-    text-align:center;
+max-width:500px;
+margin:20px auto;
+background:#e70909;
+border-radius:15px;
+padding:20px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+text-align:center;
 }
 
 h2{
-    color:green;
+color:green;
+margin-bottom:15px;
 }
 
-#today,#hijri{
-    font-size:18px;
-    font-weight:bold;
-    margin:8px 0;
+.info{
+background:#06edf9;
+border:2px solid green;
+border-radius:10px;
+padding:10px;
+margin-bottom:15px;
+}
+
+.info div{
+font-size:18px;
+font-weight:bold;
+margin:6px 0;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
+width:100%;
+border-collapse:collapse;
 }
 
 th{
-    background:green;
-    color:#eb0808e9;
-    padding:10px;
+background:green;
+color:rgb(190, 246, 5);
+padding:15px;
 }
 
 td{
-    border:1px solid #e60808ed;
-    padding:10px;
+border:5px solid #140617;
+padding:15px;
 }
 
 tr:nth-child(even){
-    background:#fffb0f;
+background:#05f5e9;
 }
 </style>
 
@@ -61,15 +70,19 @@ tr:nth-child(even){
 
 <h2>🕌 इस्लामिक कैलेंडर</h2>
 
+<div class="info">
 <div id="today"></div>
+<div id="urduDay"></div>
 <div id="hijri"></div>
+<div id="time"></div>
+</div>
 
 <table>
+
 <tr>
 <th>महीना</th>
 <th>अरबी</th>
 </tr>
-
 <tr><td>1. मुहर्रम</td><td>مُحَرَّم</td></tr>
 <tr><td>2. सफर</td><td>صَفَر</td></tr>
 <tr><td>3. रबीउल अव्वल</td><td>رَبِيعُ الْأَوَّل</td></tr>
@@ -86,28 +99,60 @@ tr:nth-child(even){
 </table>
 
 </div>
-
 <script>
 function updateDate() {
-    const now = new Date();
 
-    document.getElementById("today").innerHTML =
-        now.toLocaleDateString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
+const now = new Date();
 
-    document.getElementById("hijri").innerHTML =
-        new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        }).format(now) + " AH";
+const urduDays = [
+"اتوار",
+"پیر",
+"منگل",
+"بدھ",
+"جمعرات",
+"جمعہ",
+"ہفتہ"
+];
+
+const urduDay = urduDays[now.getDay()];
+
+const englishDate = now.toLocaleDateString("en-IN", {
+weekday: "long",
+day: "numeric",
+month: "long",
+year: "numeric"
+});
+
+const hijriDate = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+day: "numeric",
+month: "long",
+year: "numeric"
+}).format(now);
+
+const liveTime = now.toLocaleTimeString("en-IN", {
+hour: "2-digit",
+minute: "2-digit",
+second: "2-digit",
+hour12: true
+});
+
+document.getElementById("today").innerHTML =
+"📅 English: " + englishDate;
+
+document.getElementById("urduDay").innerHTML =
+"🕌 Urdu Day: " + urduDay;
+
+document.getElementById("hijri").innerHTML =
+"🌙 Hijri: " + hijriDate;
+
+document.getElementById("time").innerHTML =
+"🕒 Time: " + liveTime;
 }
 
 updateDate();
+
+// Har 1 second baad time update hoga
+setInterval(updateDate, 1000);
 </script>
 
 </body>
