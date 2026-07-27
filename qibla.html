@@ -3,276 +3,493 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Sana Islamic - Qibla Finder</title>
 
 <style>
+
 *{
-    box-sizing:border-box;
+box-sizing:border-box;
 }
 
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#071b52;
-    color:white;
-    text-align:center;
+margin:0;
+font-family:Arial,sans-serif;
+background:#061743;
+color:white;
+text-align:center;
 }
 
 .header{
-    height:65px;
-    background:#4055b8;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 20px;
+height:65px;
+background:#4055b8;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
 }
 
 .header h2{
-    margin:0;
-    font-size:25px;
+margin:0;
+font-size:25px;
 }
 
 .menu{
-    font-size:30px;
+font-size:30px;
 }
 
 .main{
-    min-height:calc(100vh - 65px);
-    padding:20px 12px 40px;
-    background:
-    radial-gradient(circle at 50% 35%,
-    #1688d8 0%,
-    #123c9c 35%,
-    #071b52 90%);
+min-height:calc(100vh - 65px);
+padding:20px 10px 40px;
+background:
+radial-gradient(
+circle at 50% 35%,
+#178bd8 0%,
+#17439e 38%,
+#061743 90%
+);
 }
 
 h1{
-    font-size:30px;
-    margin:10px 0;
+font-size:28px;
+margin:10px 0;
 }
 
 .info{
-    font-size:16px;
-    margin:8px auto 15px;
-    max-width:400px;
+font-size:16px;
+margin-bottom:15px;
 }
 
 button{
-    border:0;
-    border-radius:8px;
-    padding:14px 25px;
-    margin:6px;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
+border:0;
+border-radius:10px;
+padding:13px 22px;
+margin:5px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
 #startBtn{
-    background:white;
-    color:#222;
+background:white;
+color:#222;
 }
 
 #calibrateBtn{
-    background:#159ddc;
-    color:white;
-    display:none;
+background:#12a9e0;
+color:white;
+display:none;
 }
 
-/* MAIN QIBLA VIEW */
+/* =========================
+   QIBLA COMPASS
+========================= */
 
-.qiblaView{
-    position:relative;
-    width:100%;
-    max-width:430px;
-    height:520px;
-    margin:20px auto;
-    overflow:hidden;
-    border-radius:20px;
-    background:
-    linear-gradient(
-        to bottom,
-        #0b438f 0%,
-        #126fc0 55%,
-        #071a4d 56%,
-        #06133c 100%
-    );
-    box-shadow:0 0 25px rgba(0,0,0,.5);
+.qiblaBox{
+position:relative;
+width:350px;
+height:500px;
+max-width:95vw;
+margin:20px auto;
+overflow:hidden;
+border-radius:25px;
+
+background:
+linear-gradient(
+to bottom,
+#0b4394 0%,
+#1684cf 52%,
+#071b4f 53%,
+#041337 100%
+);
+
+box-shadow:
+0 0 30px rgba(0,0,0,.6);
 }
 
-/* STARS */
+/* Stars */
 
 .stars{
-    position:absolute;
-    top:25px;
-    width:100%;
-    font-size:25px;
-    opacity:.8;
+position:absolute;
+top:20px;
+left:0;
+width:100%;
+font-size:22px;
+opacity:.8;
+z-index:1;
 }
 
-/* QIBLA LINE */
+/* =========================
+   ROTATING COMPASS
+========================= */
 
-.qiblaLine{
-    position:absolute;
-    width:55px;
-    height:430px;
-    left:50%;
-    bottom:-230px;
-    transform:
-    translateX(-50%)
-    rotate(0deg);
+.compassDial{
+position:absolute;
+width:310px;
+height:310px;
+left:50%;
+top:35px;
 
-    transform-origin:
-    50% 100%;
+transform:
+translateX(-50%)
+rotate(0deg);
 
-    background:
-    linear-gradient(
-        to right,
-        #087bb8,
-        #28c6ef,
-        #087bb8
-    );
+border-radius:50%;
 
-    clip-path:polygon(
-        40% 100%,
-        60% 100%,
-        60% 25%,
-        100% 25%,
-        50% 0%,
-        0% 25%,
-        40% 25%
-    );
+border:3px solid rgba(255,255,255,.7);
 
-    transition:
-    transform .2s linear;
+transition:
+transform .15s linear;
 
-    z-index:2;
+z-index:3;
 }
 
-/* KAABA MARKER */
+/* Compass Outer Circle */
+
+.compassDial:before{
+content:"";
+position:absolute;
+inset:15px;
+
+border-radius:50%;
+
+border:2px solid
+rgba(255,255,255,.35);
+}
+
+/* Directions */
+
+.direction{
+position:absolute;
+font-size:24px;
+font-weight:bold;
+}
+
+.n{
+top:8px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.s{
+bottom:8px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.e{
+right:10px;
+top:50%;
+transform:translateY(-50%);
+}
+
+.w{
+left:10px;
+top:50%;
+transform:translateY(-50%);
+}
+
+/* Degree marks */
+
+.mark{
+position:absolute;
+left:50%;
+top:0;
+width:2px;
+height:15px;
+background:white;
+transform-origin:155px 155px;
+}
+
+.m1{
+transform:rotate(45deg);
+}
+
+.m2{
+transform:rotate(90deg);
+}
+
+.m3{
+transform:rotate(135deg);
+}
+
+.m4{
+transform:rotate(180deg);
+}
+
+.m5{
+transform:rotate(225deg);
+}
+
+.m6{
+transform:rotate(270deg);
+}
+
+.m7{
+transform:rotate(315deg);
+}
+
+
+/* =========================
+   FIXED CENTER POINTER
+========================= */
+
+.centerPointer{
+position:absolute;
+left:50%;
+top:190px;
+transform:translateX(-50%);
+font-size:35px;
+z-index:10;
+}
+
+
+/* =========================
+   KAABA
+========================= */
 
 .kaabaMarker{
-    position:absolute;
-    top:65px;
-    left:50%;
-    transform:translateX(-50%);
-    width:170px;
-    height:170px;
-    border-radius:50%;
-    background:#182878;
-    border:4px solid rgba(255,255,255,.45);
-    box-shadow:
-    0 0 25px rgba(0,0,0,.5);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:5;
-}
+position:absolute;
+left:50%;
+top:105px;
 
-.kaabaCircle{
-    width:125px;
-    height:125px;
-    border-radius:50%;
-    border:3px solid rgba(255,255,255,.4);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+width:95px;
+height:95px;
+
+transform:
+translateX(-50%);
+
+border-radius:50%;
+
+background:#172a83;
+
+border:
+3px solid
+rgba(255,255,255,.6);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+box-shadow:
+0 0 20px rgba(0,0,0,.5);
+
+z-index:8;
 }
 
 .kaaba{
-    font-size:68px;
+font-size:55px;
 }
 
-/* COMPASS CIRCLE */
 
-.compassCircle{
-    position:absolute;
-    width:220px;
-    height:220px;
-    left:50%;
-    top:220px;
-    transform:translateX(-50%);
-    border:5px solid white;
-    border-radius:50%;
-    z-index:6;
-    pointer-events:none;
+/* =========================
+   QIBLA ARROW
+========================= */
+
+.qiblaArrow{
+position:absolute;
+
+left:50%;
+
+top:150px;
+
+width:5px;
+
+height:130px;
+
+background:#19c3ef;
+
+transform-origin:
+bottom center;
+
+transform:
+translateX(-50%)
+rotate(0deg);
+
+z-index:6;
+
+box-shadow:
+0 0 10px #19c3ef;
 }
 
-.compassCircle:before{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:18px;
-    height:18px;
-    background:#21b8e9;
-    border-radius:50%;
-    transform:translate(-50%,-50%);
+.qiblaArrow:before{
+content:"";
+
+position:absolute;
+
+top:-18px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+border-left:
+15px solid transparent;
+
+border-right:
+15px solid transparent;
+
+border-bottom:
+25px solid #19c3ef;
 }
 
-/* DISTANCE */
+
+/* =========================
+   DISTANCE
+========================= */
 
 .distanceBox{
-    position:absolute;
-    top:340px;
-    left:50%;
-    transform:translateX(-50%);
-    background:white;
-    color:#222;
-    padding:12px 22px;
-    border-radius:10px;
-    font-size:20px;
-    font-weight:bold;
-    z-index:10;
+
+position:absolute;
+
+top:315px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+background:white;
+
+color:#222;
+
+padding:
+11px 25px;
+
+border-radius:10px;
+
+font-size:20px;
+
+font-weight:bold;
+
+z-index:15;
+
 }
 
 .distanceBox:after{
-    content:"";
-    position:absolute;
-    bottom:-12px;
-    left:50%;
-    transform:translateX(-50%);
-    border-left:12px solid transparent;
-    border-right:12px solid transparent;
-    border-top:12px solid white;
+
+content:"";
+
+position:absolute;
+
+bottom:-12px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+border-left:
+12px solid transparent;
+
+border-right:
+12px solid transparent;
+
+border-top:
+12px solid white;
+
 }
+
+
+/* =========================
+   BOTTOM COMPASS
+========================= */
+
+.bottomCompass{
+
+position:absolute;
+
+bottom:20px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+width:70px;
+
+height:70px;
+
+border-radius:50%;
+
+border:
+3px solid white;
+
+background:#10286c;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:32px;
+
+z-index:10;
+
+}
+
 
 /* INFO */
 
 #degree{
-    font-size:20px;
-    margin:10px;
+
+font-size:19px;
+
+margin:10px;
+
 }
 
 #location{
-    font-size:15px;
-    margin:8px;
+
+font-size:14px;
+
+margin:8px;
+
 }
 
 .status{
-    background:rgba(0,0,0,.35);
-    padding:12px;
-    border-radius:10px;
-    max-width:450px;
-    margin:10px auto;
+
+background:
+rgba(0,0,0,.35);
+
+padding:10px;
+
+border-radius:10px;
+
+max-width:450px;
+
+margin:10px auto;
+
 }
 
 #result{
-    font-size:17px;
-    font-weight:bold;
-    margin:10px;
+
+font-weight:bold;
+
+margin:10px;
+
 }
 
 .warning{
-    font-size:13px;
-    color:#ffe082;
-    max-width:450px;
-    margin:10px auto;
+
+font-size:13px;
+
+color:#ffe082;
+
+max-width:450px;
+
+margin:10px auto;
+
 }
 
 </style>
 </head>
 
+
 <body>
+
 
 <div class="header">
 
@@ -285,10 +502,13 @@ button{
 
 <div class="main">
 
+
 <h1>🕋 Qibla Finder</h1>
 
 <div class="info">
-मोबाइल को धीरे-धीरे घुमाएँ और Kaaba शरीफ की दिशा खोजें।
+
+मोबाइल को घुमाकर Qibla की दिशा खोजें।
+
 </div>
 
 
@@ -303,44 +523,89 @@ onclick="startQibla()">
 <button id="calibrateBtn"
 onclick="calibrateCompass()">
 
-🧭 Calibrate Compass
+🧭 Calibrate
 
 </button>
 
 
-<div class="qiblaView">
+
+<div class="qiblaBox">
+
 
 <div class="stars">
-✦　✧　✦　⋆　✧　✦
+
+✦　✧　⋆　✦　✧
+
 </div>
 
 
-<!-- QIBLA DIRECTION -->
+<!-- ROTATING COMPASS -->
 
-<div id="qiblaLine"
-class="qiblaLine">
+<div id="compassDial"
+class="compassDial">
+
+
+<div class="direction n">N</div>
+
+<div class="direction s">S</div>
+
+<div class="direction e">E</div>
+
+<div class="direction w">W</div>
+
+
+<div class="mark"></div>
+
+<div class="mark m1"></div>
+
+<div class="mark m2"></div>
+
+<div class="mark m3"></div>
+
+<div class="mark m4"></div>
+
+<div class="mark m5"></div>
+
+<div class="mark m6"></div>
+
+<div class="mark m7"></div>
+
+
 </div>
+
+
+
+<!-- QIBLA ARROW -->
+
+<div id="qiblaArrow"
+class="qiblaArrow">
+
+</div>
+
 
 
 <!-- KAABA -->
 
 <div class="kaabaMarker">
 
-<div class="kaabaCircle">
-
 <div class="kaaba">
+
 🕋
-</div>
 
 </div>
 
 </div>
 
 
-<!-- COMPASS -->
 
-<div class="compassCircle">
+<!-- CENTER POINTER -->
+
+<div class="centerPointer">
+
+▼
+
 </div>
+
 
 
 <!-- DISTANCE -->
@@ -348,13 +613,26 @@ class="qiblaLine">
 <div class="distanceBox">
 
 <span id="distance">
+
 -- km
+
 </span>
 
 </div>
 
 
+
+<!-- BOTTOM COMPASS -->
+
+<div class="bottomCompass">
+
+🧭
+
 </div>
+
+
+</div>
+
 
 
 <div id="degree">
@@ -380,44 +658,53 @@ Find Qibla दबाएँ।
 
 
 <div id="result">
+
 </div>
 
 
 <div class="warning">
 
-⚠️ Compass सही काम करने के लिए आपके मोबाइल में Magnetometer/Compass Sensor होना जरूरी है।
+⚠️ Compass सही काम करने के लिए मोबाइल में Compass Sensor होना जरूरी है।
 
 </div>
 
+
 </div>
+
 
 
 <script>
 
-/* ==========================
+
+/* =========================
 VARIABLES
-========================== */
+========================= */
 
 let qiblaBearing = 0;
 
 let compassStarted = false;
 
-let lastRotation = 0;
+let currentHeading = 0;
 
 
-/* ==========================
-START QIBLA
-========================== */
+
+/* =========================
+START
+========================= */
 
 async function startQibla(){
 
+
 document.getElementById("status").innerHTML =
+
 "📍 Location खोजी जा रही है...";
 
 
 if(!navigator.geolocation){
 
-alert("आपके Browser में GPS Support नहीं है।");
+alert(
+"आपके Browser में GPS Support नहीं है।"
+);
 
 return;
 
@@ -428,6 +715,7 @@ navigator.geolocation.getCurrentPosition(
 
 async function(position){
 
+
 let lat =
 position.coords.latitude;
 
@@ -435,60 +723,89 @@ let lon =
 position.coords.longitude;
 
 
-/* LOCATION */
 
 document.getElementById("location").innerHTML =
 
-"📍 Location: " +
+"📍 Location: "
 
-lat.toFixed(4) +
++
 
-", " +
+lat.toFixed(4)
+
++
+
+", "
+
++
 
 lon.toFixed(4);
+
 
 
 /* QIBLA */
 
 qiblaBearing =
-calculateQibla(lat,lon);
+
+calculateQibla(
+
+lat,
+
+lon
+
+);
+
 
 
 document.getElementById("degree").innerHTML =
 
-"🕋 Qibla Direction: " +
+"🕋 Qibla Direction: "
 
-qiblaBearing.toFixed(1) +
++
+
+qiblaBearing.toFixed(1)
+
++
 
 "°";
+
 
 
 /* DISTANCE */
 
 let distance =
+
 calculateDistance(
 
 lat,
+
 lon,
+
 21.4225,
+
 39.8262
 
 );
 
 
+
 document.getElementById("distance").innerHTML =
 
-distance.toFixed(0) +
+distance.toFixed(0)
+
++
 
 " km";
 
 
+
 document.getElementById("result").innerHTML =
 
-"🕋 अब मोबाइल को धीरे-धीरे घुमाएँ।";
+"🕋 मोबाइल को धीरे-धीरे घुमाएँ।";
+
 
 
 await enableCompass();
+
 
 },
 
@@ -515,11 +832,13 @@ maximumAge:0
 }
 
 
-/* ==========================
-QIBLA CALCULATION
-========================== */
+
+/* =========================
+QIBLA
+========================= */
 
 function calculateQibla(lat,lon){
+
 
 let kaabaLat =
 21.4225;
@@ -529,14 +848,30 @@ let kaabaLon =
 
 
 let lat1 =
-lat * Math.PI / 180;
+lat *
+
+Math.PI /
+
+180;
+
 
 let lat2 =
-kaabaLat * Math.PI / 180;
+kaabaLat *
+
+Math.PI /
+
+180;
+
 
 let dLon =
-(kaabaLon-lon) *
-Math.PI / 180;
+
+(kaabaLon-lon)
+
+*
+
+Math.PI /
+
+180;
 
 
 let y =
@@ -545,70 +880,136 @@ Math.sin(dLon);
 
 let x =
 
-Math.cos(lat1) *
+Math.cos(lat1)
+
+*
+
 Math.tan(lat2)
 
 -
 
-Math.sin(lat1) *
+Math.sin(lat1)
+
+*
+
 Math.cos(dLon);
 
 
 let bearing =
 
-Math.atan2(y,x) *
-180 / Math.PI;
+Math.atan2(y,x)
+
+*
+
+180 /
+
+Math.PI;
 
 
-return (bearing+360)%360;
+return (
+
+bearing +
+
+360
+
+)
+
+%
+
+360;
 
 }
 
 
-/* ==========================
+
+/* =========================
 DISTANCE
-========================== */
+========================= */
 
 function calculateDistance(
 
 lat1,
+
 lon1,
+
 lat2,
+
 lon2
 
 ){
 
-let R = 6371;
+
+let R =
+6371;
 
 
 let dLat =
-(lat2-lat1) *
-Math.PI / 180;
+
+(lat2-lat1)
+
+*
+
+Math.PI /
+
+180;
+
 
 let dLon =
-(lon2-lon1) *
-Math.PI / 180;
+
+(lon2-lon1)
+
+*
+
+Math.PI /
+
+180;
 
 
 let a =
 
-Math.sin(dLat/2) *
+Math.sin(dLat/2)
+
+*
+
 Math.sin(dLat/2)
 
 +
 
-Math.cos(lat1*Math.PI/180) *
-Math.cos(lat2*Math.PI/180)
+Math.cos(
+
+lat1 *
+
+Math.PI /
+
+180
+
+)
 
 *
 
-Math.sin(dLon/2) *
+Math.cos(
+
+lat2 *
+
+Math.PI /
+
+180
+
+)
+
+*
+
+Math.sin(dLon/2)
+
+*
+
 Math.sin(dLon/2);
 
 
 let c =
 
 2 *
+
 Math.atan2(
 
 Math.sqrt(a),
@@ -623,11 +1024,13 @@ return R*c;
 }
 
 
-/* ==========================
+
+/* =========================
 COMPASS
-========================== */
+========================= */
 
 async function enableCompass(){
+
 
 if(compassStarted){
 
@@ -641,16 +1044,20 @@ return;
 if(
 
 typeof DeviceOrientationEvent !==
+
 "undefined"
 
 &&
 
 typeof DeviceOrientationEvent.requestPermission ===
+
 "function"
 
 ){
 
+
 try{
+
 
 let permission =
 
@@ -678,10 +1085,17 @@ return;
 }
 
 
+
 /* SENSOR */
 
-if(typeof DeviceOrientationEvent !==
-"undefined"){
+if(
+
+typeof DeviceOrientationEvent !==
+
+"undefined"
+
+){
+
 
 window.addEventListener(
 
@@ -709,7 +1123,9 @@ compassStarted = true;
 
 
 document.getElementById(
+
 "calibrateBtn"
+
 ).style.display =
 
 "inline-block";
@@ -723,6 +1139,7 @@ document.getElementById("status").innerHTML =
 
 else{
 
+
 document.getElementById("status").innerHTML =
 
 "❌ Compass Support नहीं है।";
@@ -732,11 +1149,13 @@ document.getElementById("status").innerHTML =
 }
 
 
-/* ==========================
-HANDLE ORIENTATION
-========================== */
+
+/* =========================
+ORIENTATION
+========================= */
 
 function handleOrientation(event){
+
 
 let heading = null;
 
@@ -746,11 +1165,20 @@ let heading = null;
 if(
 
 event.webkitCompassHeading !==
+
 undefined
+
+&&
+
+event.webkitCompassHeading !==
+
+null
 
 ){
 
+
 heading =
+
 event.webkitCompassHeading;
 
 }
@@ -760,24 +1188,16 @@ event.webkitCompassHeading;
 
 else if(
 
-event.absolute === true
-&&
 event.alpha !== null
 
 ){
 
-heading =
-360-event.alpha;
-
-}
-
-
-/* FALLBACK */
-
-else if(event.alpha !== null){
 
 heading =
-360-event.alpha;
+
+360 -
+
+event.alpha;
 
 }
 
@@ -790,94 +1210,108 @@ return;
 
 
 heading =
-(heading+360)%360;
+
+(
+
+heading +
+
+360
+
+)
+
+%
+
+360;
 
 
-/* QIBLA ROTATION */
+currentHeading =
 
-let rotation =
-
-qiblaBearing-heading;
+heading;
 
 
-/* NORMALIZE */
 
-while(rotation > 180){
-
-rotation -= 360;
-
-}
-
-while(rotation < -180){
-
-rotation += 360;
-
-}
-
-
-/* SMOOTH */
-
-let difference =
-rotation-lastRotation;
-
-
-while(difference > 180){
-
-difference -= 360;
-
-}
-
-while(difference < -180){
-
-difference += 360;
-
-}
-
-
-lastRotation +=
-difference*0.25;
-
-
-/* MOVE QIBLA LINE */
+/* ROTATE COMPASS */
 
 document.getElementById(
-"qiblaLine"
+
+"compassDial"
+
 ).style.transform =
 
-"translateX(-50%) rotate(" +
+"translateX(-50%) rotate("
 
-lastRotation +
++
+
+(-heading)
+
++
 
 "deg)";
 
 
+
+/* QIBLA ARROW */
+
+let arrowRotation =
+
+qiblaBearing -
+
+heading;
+
+
+document.getElementById(
+
+"qiblaArrow"
+
+).style.transform =
+
+"translateX(-50%) rotate("
+
++
+
+arrowRotation
+
++
+
+"deg)";
+
+
+
 document.getElementById("status").innerHTML =
 
-"🧭 Compass: " +
+"🧭 Compass: "
 
-heading.toFixed(0) +
++
+
+heading.toFixed(0)
+
++
 
 "°";
 
 }
 
 
-/* ==========================
-CALIBRATION
-========================== */
+
+/* =========================
+CALIBRATE
+========================= */
 
 function calibrateCompass(){
 
+
 document.getElementById("status").innerHTML =
 
-"🔄 मोबाइल को धीरे-धीरे 8 के आकार में घुमाकर Compass Calibrate करें।";
+"🔄 मोबाइल को धीरे-धीरे 8 के आकार में घुमाएँ।";
 
 
 setTimeout(function(){
 
+
 document.getElementById("status").innerHTML =
 
-"✅ Calibration पूरी हो गई। अब Qibla की दिशा देखें।";
+"✅ Calibration पूरी। अब Qibla दिशा देखें।";
+
 
 },5000);
 
@@ -886,4 +1320,5 @@ document.getElementById("status").innerHTML =
 </script>
 
 </body>
+
 </html>
