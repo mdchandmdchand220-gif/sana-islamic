@@ -9,7 +9,7 @@
 }
 
 body {
-    background: #0b65ed;
+    background: #06d5fa;
     color: #0ddc1e;
 }
 
@@ -44,7 +44,7 @@ li {
 
 li:hover {
     background: #0d6e4f;
-    color: #f20707;
+    color: #f3f8fb;
     transform: translateX(5px);
 }
 
