@@ -1,116 +1,614 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 <title>Qibla Finder</title>
 
+
 <style>
+
 body{
-    font-family:Arial,sans-serif;
-    background:#f4f9f4;
-    text-align:center;
-    padding:20px;
+
+font-family:Arial,sans-serif;
+
+background:#f4f9f4;
+
+text-align:center;
+
+padding:20px;
+
 }
+
 
 .card{
-    max-width:450px;
-    margin:auto;
-    background:#fff;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 0 10px rgba(0,0,0,.2);
+
+max-width:450px;
+
+margin:auto;
+
+background:#fff;
+
+border-radius:15px;
+
+padding:20px;
+
+box-shadow:0 0 10px rgba(0,0,0,.2);
+
 }
+
 
 button{
-    background:green;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
+
+background:green;
+
+color:white;
+
+border:none;
+
+padding:12px 20px;
+
+border-radius:8px;
+
+font-size:16px;
+
+cursor:pointer;
+
+margin:5px;
+
 }
 
-#result{
-    margin-top:20px;
-    font-size:20px;
-    color:#006400;
-    font-weight:bold;
+
+button:disabled{
+
+background:#999;
+
 }
+
+
+#location{
+
+font-size:16px;
+
+}
+
+
+#compassBox{
+
+width:220px;
+
+height:220px;
+
+margin:25px auto;
+
+border-radius:50%;
+
+border:5px solid green;
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:#f8fff8;
+
+}
+
+
+#compass{
+
+font-size:100px;
+
+transition:transform 0.15s linear;
+
+}
+
+
+#arrow{
+
+position:absolute;
+
+top:10px;
+
+font-size:45px;
+
+color:red;
+
+z-index:2;
+
+}
+
+
+#degree{
+
+font-size:20px;
+
+color:#006400;
+
+}
+
+
+#result{
+
+margin-top:15px;
+
+font-size:20px;
+
+color:#006400;
+
+font-weight:bold;
+
+}
+
+
+#status{
+
+font-size:15px;
+
+color:#555;
+
+margin-top:10px;
+
+}
+
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="card">
+
 
 <h2>🕋 Qibla Finder</h2>
 
-<button onclick="findQibla()">Find Qibla</button><h3 id="location">📍 Location: --</h3>
 
-<div id="compass" style="font-size:90px;transition:0.5s;">🧭</div>
+<button onclick="findQibla()">
 
-<h3 id="degree">Qibla Direction: --</h3>
+📍 Find Qibla
 
-<div id="result"></div>
+</button>
+
+
+<button onclick="enableCompass()">
+
+🧭 Enable Compass
+
+</button>
+
+
+<h3 id="location">
+
+📍 Location: --
+
+</h3>
+
+
+<div id="compassBox">
+
+
+<div id="arrow">
+
+⬆️
 
 </div>
 
 
-<div id="result"></div>
+<div id="compass">
+
+🧭
+
+</div>
+
+
+</div>
+
+
+<h3 id="degree">
+
+Qibla Direction: --
+
+</h3>
+
+
+<div id="result">
+
+Qibla Finder शुरू करने के लिए Find Qibla दबाएँ।
+
+</div>
+
+
+<div id="status">
+
+Compass: Waiting...
+
+</div>
+
 
 </div>
 
 
 
 <script>
-function findQibla() {
-
-  navigator.geolocation.getCurrentPosition(
-
-    function(pos) {
-
-      let lat = pos.coords.latitude;
-      let lon = pos.coords.longitude;document.getElementById("location").innerHTML =
-"📍 Location: " + lat.toFixed(4) + ", " + lon.toFixed(4);
 
 
-      let kaabaLat = 21.4225;
-      let kaabaLon = 39.8262;
-
-      let dLon = (kaabaLon - lon) * Math.PI / 180;
-
-      lat = lat * Math.PI / 180;
-      kaabaLat = kaabaLat * Math.PI / 180;
-
-      let y = Math.sin(dLon);
-
-      let x = Math.cos(lat) * Math.tan(kaabaLat)
-            - Math.sin(lat) * Math.cos(dLon);
-
-      let brng = Math.atan2(y, x);
-
-      brng = brng * 180 / Math.PI;
-
-      brng = (brng + 360) % 360;document.getElementById("location").innerHTML =
-"📍 Location: " + lat.toFixed(4) + ", " + lon.toFixed(4);
+/* =========================================
+   VARIABLES
+========================================= */
 
 
-      document.getElementById("result").innerHTML =
-        "🕋 Qibla Direction: <b>" + brng.toFixed(2) + "°</b>";
+let qiblaDirection = 0;
 
-    },
+let currentHeading = 0;
 
-    function() {
-      alert("Location Permission Allow करें");
-    }
+let compassStarted = false;
 
-  );
+
+
+/* =========================================
+   FIND QIBLA
+========================================= */
+
+
+function findQibla(){
+
+
+if(!navigator.geolocation){
+
+alert("आपके मोबाइल में GPS Support नहीं करता।");
+
+return;
 
 }
 
+
+
+document.getElementById("result").innerHTML =
+
+"📍 आपकी Location खोजी जा रही है...";
+
+
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+
+let userLat = position.coords.latitude;
+
+let userLon = position.coords.longitude;
+
+
+
+document.getElementById("location").innerHTML =
+
+"📍 Location: " +
+
+userLat.toFixed(4) +
+
+", " +
+
+userLon.toFixed(4);
+
+
+
+/*
+Kaaba Location
+*/
+
+let kaabaLat = 21.4225;
+
+let kaabaLon = 39.8262;
+
+
+
+/*
+Degree में Convert
+*/
+
+let lat1 = userLat * Math.PI / 180;
+
+let lat2 = kaabaLat * Math.PI / 180;
+
+let dLon =
+
+(kaabaLon - userLon) *
+
+Math.PI / 180;
+
+
+
+/*
+Qibla Bearing Calculate
+*/
+
+let y = Math.sin(dLon);
+
+let x =
+
+Math.cos(lat1) *
+
+Math.tan(lat2)
+
+-
+
+Math.sin(lat1) *
+
+Math.cos(dLon);
+
+
+
+let bearing =
+
+Math.atan2(y,x)
+
+*
+
+180 / Math.PI;
+
+
+
+qiblaDirection =
+
+(bearing + 360) % 360;
+
+
+
+document.getElementById("degree").innerHTML =
+
+"🕋 Qibla Direction: " +
+
+qiblaDirection.toFixed(1) +
+
+"°";
+
+
+
+document.getElementById("result").innerHTML =
+
+"🕋 मोबाइल को धीरे-धीरे घुमाएँ। लाल ⬆️ निशान को Qibla की दिशा में रखें।";
+
+
+
+/*
+Compass Start
+*/
+
+enableCompass();
+
+
+},
+
+function(error){
+
+
+document.getElementById("result").innerHTML =
+
+"❌ Location नहीं मिली। GPS और Location Permission ON करें।";
+
+
+},
+
+{
+
+enableHighAccuracy:true,
+
+timeout:10000,
+
+maximumAge:0
+
+}
+
+);
+
+}
+
+
+
+/* =========================================
+   ENABLE COMPASS
+========================================= */
+
+
+async function enableCompass(){
+
+
+if(compassStarted){
+
+return;
+
+}
+
+
+/*
+iPhone / iPad में Permission
+*/
+
+if(
+
+typeof DeviceOrientationEvent !== "undefined" &&
+
+typeof DeviceOrientationEvent.requestPermission === "function"
+
+){
+
+
+try{
+
+
+let permission =
+
+await DeviceOrientationEvent.requestPermission();
+
+
+
+if(permission !== "granted"){
+
+
+document.getElementById("status").innerHTML =
+
+"❌ Compass Permission Allow नहीं हुई।";
+
+
+return;
+
+}
+
+
+}
+
+catch(error){
+
+
+document.getElementById("status").innerHTML =
+
+"❌ Compass Permission Error";
+
+
+return;
+
+}
+
+}
+
+
+
+/*
+Compass Event Start
+*/
+
+if(window.DeviceOrientationEvent){
+
+
+window.addEventListener(
+
+"deviceorientation",
+
+handleOrientation,
+
+true
+
+);
+
+
+compassStarted = true;
+
+
+document.getElementById("status").innerHTML =
+
+"🧭 Compass चालू है। मोबाइल घुमाएँ।";
+
+
+}
+
+else{
+
+
+document.getElementById("status").innerHTML =
+
+"❌ इस Browser में Compass Support नहीं है।";
+
+
+}
+
+}
+
+
+
+/* =========================================
+   COMPASS ORIENTATION
+========================================= */
+
+
+function handleOrientation(event){
+
+
+let heading = null;
+
+
+
+/*
+iPhone / iOS
+*/
+
+if(event.webkitCompassHeading){
+
+heading = event.webkitCompassHeading;
+
+}
+
+
+/*
+Android
+*/
+
+else if(event.alpha !== null){
+
+heading = 360 - event.alpha;
+
+}
+
+
+
+/*
+Heading मिला
+*/
+
+if(heading !== null){
+
+
+currentHeading = heading;
+
+
+/*
+Qibla की तरफ Arrow Rotate
+*/
+
+let rotation =
+
+qiblaDirection -
+
+currentHeading;
+
+
+
+document.getElementById("arrow").style.transform =
+
+"rotate(" +
+
+rotation +
+
+"deg)";
+
+
+document.getElementById("status").innerHTML =
+
+"🧭 Compass: " +
+
+currentHeading.toFixed(0) +
+
+"°";
+
+
+}
+
+}
+
+
 </script>
 
+
 </body>
+
 </html>
