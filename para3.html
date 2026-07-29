@@ -4,137 +4,240 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>पारा 3</title>
+<title>पारा 3 - تلك الرسل</title>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
 body{
-    font-family: Arial, sans-serif;
-    background:#0638ef;
-    margin:0;
-    padding:15px;
-    line-height:1.8;
+font-family:Arial,sans-serif;
+background:#eaf7ef;
+line-height:1.8;
 }
 
-h2{
-    text-align:center;
-    color:#d2fb02;
+.banner{
+width:100%;
+max-width:1000px;
+margin:20px auto;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 8px 20px rgba(0,0,0,.25);
 }
 
-.card{
-    background:rgb(15, 224, 15);
-    padding:15px;
-    margin:15px 0;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+.banner img{
+width:100%;
+display:block;
+}
+
+.heading{
+background:#0b6b3a;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.heading h1{
+font-size:34px;
+}
+
+.heading h2{
+font-size:28px;
+color:#ffe600;
+}
+
+.heading h3{
+font-size:25px;
+}
+
+.heading p{
+font-size:22px;
+}
+
+.credit{
+background:#f5d142;
+color:#000;
+text-align:center;
+padding:15px;
+font-size:20px;
+font-weight:bold;
+}
+
+.ayah{
+background:white;
+margin:18px;
+padding:18px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,.15);
 }
 
 .number{
-    font-size:20px;
-    font-weight:bold;
-    color:#0b8457;
-    margin-bottom:10px;
+font-size:22px;
+font-weight:bold;
+color:#0b6b3a;
 }
 
 .arabic{
-    font-size:25px;
-    text-align:right;
-    direction:rtl;
-    line-height:2;
-    margin-bottom:10px;
+font-size:32px;
+direction:rtl;
+text-align:right;
+line-height:2;
+margin:10px 0;
 }
 
 .hindi{
-    font-size:18px;
-    color:#a31010;
+font-size:20px;
+color:#b00020;
 }
+
+@media(max-width:768px){
+
+.arabic{
+font-size:27px;
+}
+
+.hindi{
+font-size:18px;
+}
+
+}
+
 </style>
 </head>
 
-<body
-
 <body>
 
-<h2>पारा 3 - तिल्कर-रुसुल</h2>
+<div class="banner">
+<img src="image/imagespara3-banner.jpg" alt="Para 3 Banner">
+</div>
 
-<div id="content">डेटा लोड हो रहा है...</div>
 
+<div class="heading">
+
+<h1>पारा 3</h1>
+
+<h2>الجزء الثالث</h2>
+
+<h3>پارہ 3</h3>
+
+<p>Para 3</p>
+
+</div>
+
+
+<div class="credit">
+
+सना इस्लामिक<br>
+سنا الإسلامية<br>
+سنا اسلامک<br>
+SANAISLAMIC
+
+</div>
+
+
+<div id="content">
+
+<h2 style="text-align:center;color:#0b6b3a;">
+📖 कुरआन लोड हो रहा है...
+</h2>
+
+</div>
 <script>
 
 Promise.all([
-fetch("https://api.alquran.cloud/v1/surah/2/quran-simple").then(r=>r.json()),
-fetch("https://api.alquran.cloud/v1/surah/2/hi.farooq").then(r=>r.json()),
-fetch("https://api.alquran.cloud/v1/surah/3/quran-simple").then(r=>r.json()),
-fetch("https://api.alquran.cloud/v1/surah/3/hi.farooq").then(r=>r.json())
+
+fetch("https://api.alquran.cloud/v1/surah/2/quran-simple")
+.then(r=>r.json()),
+
+fetch("https://api.alquran.cloud/v1/surah/2/hi.farooq")
+.then(r=>r.json()),
+
+fetch("https://api.alquran.cloud/v1/surah/3/quran-simple")
+.then(r=>r.json()),
+
+fetch("https://api.alquran.cloud/v1/surah/3/hi.farooq")
+.then(r=>r.json())
+
 ])
 
-.then(([baqarahAr,baqarahHi,imranAr,imranHi])=>{
+.then(([ba_ar,ba_hi,im_ar,im_hi])=>{
 
 let html="";
 
-let ar1=baqarahAr.data.ayahs;
-let hi1=baqarahHi.data.ayahs;
 
-let ar2=imranAr.data.ayahs;
-let hi2=imranHi.data.ayahs;
-// सूरह अल-बक़रह (आयत 253–286)
+// सूरह अल-बक़रह आयत 253 से 286
+
 for(let i=252;i<286;i++){
 
 html += `
+
 <div class="ayah">
 
+<div class="number">
+सूरह अल-बक़रह - आयत ${i+1}
+</div>
+
 <div class="arabic">
-${ar1[i].text}
+${ba_ar.data.ayahs[i].text}
 </div>
 
 <div class="hindi">
-<span class="number">
-सूरह अल-बक़रह : आयत ${i+1}
-</span>
-<br><br>
-${hi1[i].text}
+${ba_hi.data.ayahs[i].text}
 </div>
 
 </div>
+
 `;
 
 }
 
-// सूरह आल-इमरान (आयत 1–92)
+
+// सूरह आले इमरान आयत 1 से 92
+
 for(let i=0;i<92;i++){
 
 html += `
+
 <div class="ayah">
 
+<div class="number">
+सूरह आले इमरान - आयत ${i+1}
+</div>
+
 <div class="arabic">
-${ar2[i].text}
+${im_ar.data.ayahs[i].text}
 </div>
 
 <div class="hindi">
-<span class="number">
-सूरह आल-इमरान : आयत ${i+1}
-</span>
-<br><br>
-${hi2[i].text}
+${im_hi.data.ayahs[i].text}
 </div>
 
 </div>
+
 `;
 
 }
 
-document.getElementById("content").innerHTML = html;
+
+document.getElementById("content").innerHTML=html;
+
 
 })
 
 .catch(error=>{
 
-document.getElementById("content").innerHTML =
-"<h3 style='color:red;text-align:center;'>डेटा लोड करने में समस्या आई। कृपया इंटरनेट कनेक्शन जाँचें।</h3>";
+document.getElementById("content").innerHTML=
+"<h2 style='color:red;text-align:center;'>डेटा लोड नहीं हो सका।</h2>";
 
 console.error(error);
 
 });
+
 </script>
+
 
 </body>
 </html>
