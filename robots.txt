@@ -1,1 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mdchandmdchand220-gif.github.io/sana-islamic/sitemap.xml
 
